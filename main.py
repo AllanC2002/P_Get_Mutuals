@@ -27,7 +27,7 @@ def get_mutuals():
     except jwt.InvalidTokenError:
         return jsonify({"error": "Invalid token"}), 401
 
-    mutuals = get_mutuals_f(user_id)
+    mutuals = get_mutuals_f(user_id) #
     return jsonify(mutuals), 200
 
 if __name__ == "__main__":

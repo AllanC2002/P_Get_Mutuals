@@ -1,8 +1,9 @@
-from models.models import Profile, Followers
-from conections.mysql import conection_userprofile
+# app/queries/get_mutual_followers.py
+from db.mysql_connection import get_userprofile_session
+from models.profile_model import Profile, Followers
 
-def get_mutuals_f(user_id):
-    session = conection_userprofile()
+def get_mutual_followers(user_id):
+    session = get_userprofile_session()
 
     followers = session.query(Followers.Id_Follower).filter_by(Id_Following=user_id, Status=1).all()
     follower_ids = {f.Id_Follower for f in followers}
@@ -14,16 +15,7 @@ def get_mutuals_f(user_id):
 
     mutual_users = session.query(Profile).filter(Profile.Id_User.in_(mutual_ids), Profile.Status_account == 1).all()
 
-    result = []
-    for user in mutual_users:
-        result.append({
-            "Id_User": user.Id_User,
-            "User_mail": user.User_mail
-            #"Name": user.Name,
-            #"Lastname": user.Lastname,
-            #"Email": user.User_mail,
-            #"Description": user.Description
-        })
+    result = [{"Id_User": user.Id_User, "User_mail": user.User_mail} for user in mutual_users]
 
     session.close()
     return result

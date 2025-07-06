@@ -1,3 +1,4 @@
+# app/models/profile_model.py
 from sqlalchemy import Column, Integer, String, ForeignKey, CheckConstraint
 from sqlalchemy.ext.declarative import declarative_base
 
